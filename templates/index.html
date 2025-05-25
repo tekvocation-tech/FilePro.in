@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light"> <!-- Default theme, JS handles switch -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Convert PDF, DOCX, PPTX, JPG, PNG files. Merge multiple PDFs or DOCX files. User-friendly online file utility.">
+    <meta name="keywords" content="file converter, pdf to docx, docx to pdf, image to pdf, pdf to image, pptx to pdf, merge pdf, merge docx">
+    <title>FilePro.in - Convert & Merge Suite</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📂</text></svg>">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top"> <!-- Removed navbar-light bg-light, CSS handles theme -->
+        <div class="container"> <!-- Bootstrap container for content centering -->
+            <a class="navbar-brand" href="{{ url_for('index') }}"> FilePro.in</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavContent" aria-controls="navbarNavContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavContent">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <button id="themeSwitcher" class="btn btn-sm theme-switcher-btn" type="button" aria-label="Toggle theme">
+                            <i class="bi bi-sun-fill"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Changed container to page-container for custom max-width -->
+    <main class="page-container mt-4"> 
+        {% include 'partials/_flashes.html' %}
+
+        <header class="text-center mb-5">
+            <h1>Welcome to FilePro.in</h1>
+            <p class="lead text-muted">Your one-stop solution for file conversion and merging.</p>
+        </header>
+
+        <!-- Converter Section (No structural changes needed from previous) -->
+        <section class="tool-section mb-5" id="converterSection">
+            <h2>File Converter</h2>
+            <form id="convertForm" enctype="multipart/form-data" data-action-url="{{ url_for('convert_file_route') }}">
+                <div class="mb-3">
+                    <label for="convertFileInputActual" class="form-label">1. Upload File to Convert:</label>
+                    <div id="dropArea" class="p-4 text-center">
+                        <i class="bi bi-cloud-arrow-up-fill fs-1 text-primary"></i>
+                        <p>Drag & drop your file here, or <label for="convertFileInputActual" class="file-input-label">click to browse</label>.</p>
+                        <small class="text-muted">(PDF, DOCX, PPTX, JPG, PNG)</small>
+                    </div>
+                    <input type="file" name="file_to_convert" id="convertFileInputActual" class="d-none" 
+                           accept=".pdf,.docx,.pptx,.jpg,.jpeg,.png">
+                    <ul id="fileList" class="mt-2"></ul>
+                </div>
+
+                <div class="mb-3">
+                    <label for="convertTo" class="form-label">2. Convert To:</label>
+                    <select name="target_format" id="convertTo" class="form-select" required disabled>
+                        <option value="">-- Select uploaded file first --</option>
+                    </select>
+                </div>
+                
+                <button type="submit" id="convertButton" class="btn btn-primary w-100 py-2" disabled><i class="bi bi-gear-fill"></i> Convert File</button>
+            </form>
+            <div id="convertStatusArea" class="status-area mt-3" style="display: none;">
+                <div class="progress mb-2" role="progressbar" aria-label="Conversion progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="height: 1.25rem;">
+                    <div id="convertProgressBar" class="progress-bar progress-bar-striped progress-bar-animated fs-small" style="width: 0%">0%</div>
+                </div>
+                <p id="convertStatusMessage" class="status-message text-center"></p>
+                <div id="convertDownloadLinkContainer" class="text-center mt-2"></div>
+            </div>
+        </section>
+
+        <!-- Merger Section (No structural changes needed from previous) -->
+        <section class="tool-section" id="mergerSection">
+            <h2>File Merger</h2>
+             <p class="text-muted small mb-3">Merge multiple PDF files into one, or multiple DOCX files into one.</p>
+            <form id="mergeForm" enctype="multipart/form-data" data-action-url="{{ url_for('merge_files_route') }}">
+                <div class="mb-3">
+                    <label for="mergeFilesInputActual" class="form-label">1. Upload Files to Merge (Same Type):</label>
+                     <div id="dropAreaMerge" class="p-4 text-center">
+                        <i class="bi bi-files fs-1 text-primary"></i>
+                        <p>Drag & drop your files here, or <label for="mergeFilesInputActual" class="file-input-label">click to browse</label>.</p>
+                        <small class="text-muted">(Multiple PDFs or multiple DOCXs)</small>
+                    </div>
+                    <input type="file" name="files_to_merge" id="mergeFilesInputActual" class="d-none" multiple
+                           accept=".pdf,.docx">
+                    <input type="hidden" name="merge_type" id="mergeType">
+                    <ul id="fileListMerge" class="mt-2"></ul>
+                </div>
+                
+                <button type="submit" id="mergeButton" class="btn btn-primary w-100 py-2" disabled><i class="bi bi-node-plus-fill"></i> Merge Files</button>
+            </form>
+            <div id="mergeStatusArea" class="status-area mt-3" style="display: none;">
+                <div class="progress mb-2" role="progressbar" aria-label="Merging progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="height: 1.25rem;">
+                    <div id="mergeProgressBar" class="progress-bar progress-bar-striped progress-bar-animated fs-small" style="width: 0%">0%</div>
+                </div>
+                <p id="mergeStatusMessage" class="status-message text-center"></p>
+                <div id="mergeDownloadLinkContainer" class="text-center mt-2"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Updated Footer with its own class for styling -->
+    <footer class="footer">
+        <div class="container"> <!-- Standard Bootstrap container for footer content -->
+            <small>© <script>document.write(new Date().getFullYear())</script> FilePro Suite. Your files are processed securely and deleted after processing.</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

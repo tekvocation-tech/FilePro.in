@@ -1,0 +1,12 @@
+Flask
+python-docx
+docx2pdf
+PyPDF2
+fpdf2
+img2pdf
+pdfplumber
+pdf2image
+pdf2docx
+mammoth
+python-pptx
+Pillow

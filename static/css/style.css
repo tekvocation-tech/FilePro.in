@@ -1,0 +1,270 @@
+/* static/css/style.css */
+/* No Google Font import needed if using a generic sans-serif stack */
+
+:root {
+    --primary-color: #007bff;
+    --primary-hover-color: #0056b3;
+    --secondary-color: #6c757d; /* For less prominent text/borders */
+
+    /* Light Theme Colors */
+    --light-bg: #f8f9fa;         /* Main page background */
+    --light-text: #212529;       /* Main text color */
+    --light-card-bg: #ffffff;    /* Card/section background */
+    --light-border: #dee2e6;     /* Borders for cards, inputs */
+    --light-navbar-bg: #ffffff;  /* Navbar background */
+    --light-navbar-text: #343a40;/* Navbar text */
+    --light-navbar-border: #e0e0e0;/* Navbar bottom border */
+    --light-footer-bg: #f1f3f5;  /* Footer background */
+    --light-footer-text: #495057;/* Footer text */
+
+    /* Dark Theme Colors */
+    --dark-bg: #1a1d21;          /* Main page background - slightly different dark */
+    --dark-text: #e9ecef;        /* Main text color */
+    --dark-card-bg: #2c3034;     /* Card/section background */
+    --dark-border: #454b52;      /* Borders for cards, inputs */
+    --dark-navbar-bg: #212529;   /* Navbar background */
+    --dark-navbar-text: #adb5bd; /* Navbar text */
+    --dark-navbar-border: #343a40;/* Navbar bottom border */
+    --dark-footer-bg: #212529;   /* Footer background - same as navbar dark */
+    --dark-footer-text: #868e96; /* Footer text */
+
+    /* Generic Accent/Feedback Colors (can be themed too if needed) */
+    --success-color: #198754; /* Bootstrap success green */
+    --error-color: #dc3545;   /* Bootstrap danger red */
+    --warning-color: #ffc107; /* Bootstrap warning yellow */
+
+    /* UPDATED FONT STACK: Robust generic sans-serif */
+    --font-family-custom: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    
+    --border-radius: 0.375rem;
+    --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* IF YOU HAVE "Claude Sans" font files (e.g., in static/fonts/):
+@font-face {
+    font-family: 'Claude Sans';
+    src: url('../fonts/ClaudeSans-Regular.woff2') format('woff2'),
+         url('../fonts/ClaudeSans-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Claude Sans';
+    src: url('../fonts/ClaudeSans-Bold.woff2') format('woff2'),
+         url('../fonts/ClaudeSans-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+Then, in --font-family-custom, you'd put 'Claude Sans' first:
+--font-family-custom: 'Claude Sans', system-ui, -apple-system, ... etc. ...;
+*/
+
+
+body {
+    font-family: var(--font-family-custom);
+    padding-top: 70px;
+    background-color: var(--light-bg);
+    color: var(--text-light);
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure footer sticks to bottom if content is short */
+}
+
+[data-bs-theme="dark"] body {
+    background-color: var(--dark-bg);
+    color: var(--text-dark);
+}
+
+.navbar {
+    background-color: var(--light-navbar-bg);
+    border-bottom: 1px solid var(--light-navbar-border);
+    box-shadow: var(--box-shadow);
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+[data-bs-theme="dark"] .navbar {
+    background-color: var(--dark-navbar-bg);
+    border-bottom-color: var(--dark-navbar-border);
+}
+
+.navbar .navbar-brand {
+    font-weight: 600;
+    color: var(--primary-color) !important; /* Use primary color for brand */
+}
+[data-bs-theme="dark"] .navbar .navbar-brand {
+    color: #79c0ff !important; /* Lighter, accessible blue for dark theme brand */
+}
+
+.navbar .nav-link { /* For any additional nav links if you add them */
+    color: var(--light-navbar-text);
+}
+[data-bs-theme="dark"] .navbar .nav-link {
+    color: var(--dark-navbar-text);
+}
+.navbar .nav-link:hover {
+    color: var(--primary-color);
+}
+[data-bs-theme="dark"] .navbar .nav-link:hover {
+    color: #79c0ff;
+}
+
+#themeSwitcher {
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+#themeSwitcher:hover {
+    background-color: var(--secondary-color);
+    color: var(--light-navbar-bg); /* Text color on hover for light theme */
+}
+[data-bs-theme="dark"] #themeSwitcher {
+    color: #adb5bd;
+    border-color: #adb5bd;
+}
+[data-bs-theme="dark"] #themeSwitcher:hover {
+    background-color: #adb5bd;
+    color: var(--dark-navbar-bg); /* Text color on hover for dark theme */
+}
+
+.page-container { /* Renamed .container to .page-container for clarity */
+    flex-grow: 1; /* Allows footer to be pushed down */
+    width: 100%;
+    max-width: 850px; /* Slightly wider */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+.tool-section {
+    background-color: var(--light-card-bg);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    border: 1px solid var(--light-border);
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+[data-bs-theme="dark"] .tool-section {
+    background-color: var(--dark-card-bg);
+    border-color: var(--dark-border);
+}
+
+.tool-section h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-color);
+    display: inline-block;
+}
+[data-bs-theme="dark"] .tool-section h2 {
+    color: #79c0ff;
+    border-bottom-color: #79c0ff;
+}
+
+/* Drop Area Styling */
+#dropArea, #dropAreaMerge {
+    border: 2px dashed var(--primary-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f1f3f5;
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+[data-bs-theme="dark"] #dropArea, 
+[data-bs-theme="dark"] #dropAreaMerge {
+    background-color: #2c3034; /* Slightly lighter than card dark bg */
+    border-color: #79c0ff;
+}
+#dropArea.highlight, #dropAreaMerge.highlight {
+    background-color: #e0e9ff;
+    border-color: var(--primary-hover-color);
+}
+[data-bs-theme="dark"] #dropArea.highlight, 
+[data-bs-theme="dark"] #dropAreaMerge.highlight {
+    background-color: #3b4b69;
+    border-color: #a8d8ff;
+}
+#dropArea p, #dropAreaMerge p { margin-bottom: 0.5rem; font-size: 1.1rem; }
+.file-input-label { cursor: pointer; color: var(--primary-color); text-decoration: underline; font-weight: 500; }
+[data-bs-theme="dark"] .file-input-label { color: #79c0ff; }
+
+/* File List Styling */
+#fileList, #fileListMerge {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 1rem;
+}
+#fileList li, #fileListMerge li {
+    background-color: var(--light-bg); /* Consistent with page bg */
+    padding: 0.6rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    border: 1px solid var(--light-border);
+}
+[data-bs-theme="dark"] #fileList li, 
+[data-bs-theme="dark"] #fileListMerge li {
+    background-color: var(--dark-card-bg); /* Use card bg for contrast */
+    border-color: var(--dark-border);
+    color: var(--text-dark);
+}
+.file-icon { margin-right: 0.75rem; font-size: 1.1em; }
+.remove-file { color: var(--error-color); cursor: pointer; font-weight: bold; font-size: 1.2em; }
+.remove-file:hover { opacity: 0.8; }
+
+/* Status Area & Progress */
+.status-area {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: var(--light-bg);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--light-border);
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+[data-bs-theme="dark"] .status-area {
+    background-color: var(--dark-card-bg); /* Consistent with tool section cards */
+    border-color: var(--dark-border);
+}
+.status-area .progress { display: none; margin-bottom: 0.75rem; height: 1.25rem; }
+.status-message { font-weight: 500; text-align: center; }
+
+/* Alerts from _flashes.html using Bootstrap's theming + our custom feedback colors */
+.alert-success { background-color: var(--success-bg-light); color: var(--success-text-light); border-color: var(--success-color); }
+.alert-danger  { background-color: var(--error-bg-light); color: var(--error-text-light); border-color: var(--error-color); }
+.alert-warning { background-color: var(--warning-bg-light); color: var(--warning-text-light); border-color: var(--warning-color); }
+
+[data-bs-theme="dark"] .alert-success { background-color: var(--success-bg-dark); color: var(--success-text-dark); border-color: var(--success-text-dark); }
+[data-bs-theme="dark"] .alert-danger  { background-color: var(--error-bg-dark); color: var(--error-text-dark); border-color: var(--error-text-dark); }
+[data-bs-theme="dark"] .alert-warning { background-color: var(--warning-bg-dark); color: var(--warning-text-dark); border-color: var(--warning-text-dark); }
+
+
+/* Footer Styling */
+.footer {
+    background-color: var(--light-footer-bg);
+    color: var(--light-footer-text);
+    padding: 1.5rem 0;
+    margin-top: auto; /* Pushes footer to bottom */
+    border-top: 1px solid var(--light-navbar-border); /* Use navbar border for consistency */
+    text-align: center;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+[data-bs-theme="dark"] .footer {
+    background-color: var(--dark-footer-bg);
+    color: var(--dark-footer-text);
+    border-top-color: var(--dark-navbar-border);
+}
+
+/* Ensure Bootstrap form controls and buttons pick up themed variables where needed */
+/* Bootstrap 5.3+ handles this well with data-bs-theme on html/body */
+.form-select, .form-control, .btn {
+    /* Generally, these will theme well with Bootstrap's own mechanisms */
+}
